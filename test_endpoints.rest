@@ -1,5 +1,5 @@
 ### Get all notes
-GET http://localhost:3001/api/notes
+GET https://fast-shore-57893.herokuapp.com/api/notes
 
 ### POST
 POST http://localhost:3001/api/notes/
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 
 ### PUT
-PUT http://localhost:3001/api/notes/1
+PUT https://fast-shore-57893.herokuapp.com/api/notes/1
 Content-Type: application/json
 
 {
