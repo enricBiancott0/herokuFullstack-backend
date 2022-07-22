@@ -5,10 +5,22 @@ const app = require('../app')
 const api = supertest(app)
 
 const Note = require('../models/note')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Note.deleteMany({})
+  await User.deleteMany({})
+
   await Note.insertMany(helper.initialNotes)
+  const newUser = {
+    'username': 'root',
+    'name': 'Superuser',
+    'password': 'salainen'
+  }
+
+  await api
+    .post('/api/users')
+    .send(newUser)
 })
 
 describe('when there is initially some notes saved', () => {
@@ -77,9 +89,18 @@ describe('addition of a new note', () => {
       content: 'async/await simplifies making async calls',
       important: true,
     }
+    const rootUser = {
+      'username': 'root',
+      'password': 'salainen'
+    }
+    const token = 'bearer ' + await api
+      .post('/api/login')
+      .send(rootUser)
+      .then(res => res.body.token)
 
     await api
       .post('/api/notes')
+      .set('Authorization', token)
       .send(newNote)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -97,9 +118,18 @@ describe('addition of a new note', () => {
     const newNote = {
       important: true
     }
+    const rootUser = {
+      'username': 'root',
+      'password': 'salainen'
+    }
+    const token = 'bearer ' + await api
+      .post('/api/login')
+      .send(rootUser)
+      .then(res => res.body.token)
 
     await api
       .post('/api/notes')
+      .set('Authorization', token)
       .send(newNote)
       .expect(400)
 
