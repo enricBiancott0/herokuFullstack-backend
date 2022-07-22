@@ -84,19 +84,24 @@ describe('viewing a specific note', () => {
 })
 
 describe('addition of a new note', () => {
+  // get authorization bearer token from api/login
+  let token
+  beforeEach(async () => {
+    const rootUser = {
+      'username': 'root',
+      'password': 'salainen'
+    }
+    token = 'bearer ' + await api
+      .post('/api/login')
+      .send(rootUser)
+      .then(res => res.body.token)
+
+  })
   test('succeeds with valid data', async () => {
     const newNote = {
       content: 'async/await simplifies making async calls',
       important: true,
     }
-    const rootUser = {
-      'username': 'root',
-      'password': 'salainen'
-    }
-    const token = 'bearer ' + await api
-      .post('/api/login')
-      .send(rootUser)
-      .then(res => res.body.token)
 
     await api
       .post('/api/notes')
@@ -118,14 +123,6 @@ describe('addition of a new note', () => {
     const newNote = {
       important: true
     }
-    const rootUser = {
-      'username': 'root',
-      'password': 'salainen'
-    }
-    const token = 'bearer ' + await api
-      .post('/api/login')
-      .send(rootUser)
-      .then(res => res.body.token)
 
     await api
       .post('/api/notes')
