@@ -95,8 +95,8 @@ describe('addition of a new note', () => {
       .post('/api/login')
       .send(rootUser)
       .then(res => res.body.token)
-
   })
+
   test('succeeds with valid data', async () => {
     const newNote = {
       content: 'async/await simplifies making async calls',
